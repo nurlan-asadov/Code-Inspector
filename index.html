@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CodeInspector | Static Code Analysis Game</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <div class="background-grid"></div>
+    <div class="ambient ambient-a"></div>
+    <div class="ambient ambient-b"></div>
+
+    <header class="topbar">
+      <div class="brand-block">
+        <p class="eyebrow">Penetration Tester Training Terminal</p>
+        <h1 id="app-title">CodeInspector by Asadov</h1>
+        <p class="subtitle">Static Code Analysis Game</p>
+      </div>
+      <div class="topbar-rail">
+        <div class="status-chip">Offline Local Simulation</div>
+        <div class="status-chip warm-chip">55 Scenario</div>
+      </div>
+    </header>
+
+    <main class="screen-stack">
+      <section id="welcome-screen" class="panel screen active">
+        <div class="simple-welcome">
+          <section class="language-panel welcome-language-panel minimal-language-panel">
+            <div class="minimal-language-group">
+              <label class="minimal-language-option">
+                <input type="radio" name="app-language" value="az" checked>
+                <span>AZ</span>
+              </label>
+              <label class="minimal-language-option">
+                <input type="radio" name="app-language" value="tr">
+                <span>TR</span>
+              </label>
+              <label class="minimal-language-option">
+                <input type="radio" name="app-language" value="en">
+                <span>EN</span>
+              </label>
+            </div>
+          </section>
+          <p class="section-tag" id="welcome-tag">Welcome</p>
+          <h2 id="welcome-title">Code review training with pentest instincts.</h2>
+          <p class="lead" id="welcome-lead">Review code, spot real vulnerabilities, and avoid false positives.</p>
+          <button id="continue-btn" class="primary-btn">Start</button>
+        </div>
+      </section>
+
+      <section id="start-screen" class="panel screen">
+        <div class="hero-layout">
+          <div class="hero-copy">
+            <p class="section-tag">Mission Brief</p>
+            <h2>Train your pattern recognition against realistic web code.</h2>
+            <p class="lead">
+              Review snippets like a junior pentester under evaluation. Some are vulnerable, some are safe,
+              and some are deliberately misleading. Each session pulls <strong>10 unique rounds</strong> from a
+              larger rotating bank.
+            </p>
+
+            <div class="feature-grid">
+              <article class="mini-card">
+                <span class="mini-label">Rounds</span>
+                <strong>10 per mission</strong>
+                <p>Exactly 10 random snippets every time you start.</p>
+              </article>
+              <article class="mini-card">
+                <span class="mini-label">Question Bank</span>
+                <strong id="question-bank-count">50+</strong>
+                <p>Reusable scenarios split across core web vulnerability categories.</p>
+              </article>
+              <article class="mini-card">
+                <span class="mini-label">Hint System</span>
+                <strong>Progressive Intel</strong>
+                <p>Each hint gets more specific and reduces the round score.</p>
+              </article>
+            </div>
+
+            <section class="language-panel">
+              <p class="section-tag" id="mode-panel-title">Answer Mode</p>
+              <div class="language-grid">
+                <label class="language-card">
+                  <input type="radio" name="answer-mode" value="choice" checked>
+                  <span id="choice-mode-label">Multiple Choice</span>
+                </label>
+                <label class="language-card">
+                  <input type="radio" name="answer-mode" value="input">
+                  <span id="input-mode-label">Input Mode</span>
+                </label>
+              </div>
+            </section>
+
+            <section class="language-panel">
+              <p class="section-tag" id="difficulty-panel-title">Difficulty Filter</p>
+              <div class="language-grid">
+                <label class="language-card">
+                  <input type="radio" name="difficulty-filter" value="mixed" checked>
+                  <span id="difficulty-mixed-label">Mixed</span>
+                </label>
+                <label class="language-card">
+                  <input type="radio" name="difficulty-filter" value="easy">
+                  <span id="difficulty-easy-label">Easy</span>
+                </label>
+                <label class="language-card">
+                  <input type="radio" name="difficulty-filter" value="medium">
+                  <span id="difficulty-medium-label">Medium</span>
+                </label>
+                <label class="language-card">
+                  <input type="radio" name="difficulty-filter" value="hard">
+                  <span id="difficulty-hard-label">Hard</span>
+                </label>
+              </div>
+            </section>
+          </div>
+
+          <aside class="side-panel terminal-card">
+            <div class="terminal-head">
+              <span class="terminal-dot"></span>
+              <span class="terminal-dot"></span>
+              <span class="terminal-dot"></span>
+              <strong id="terminal-title">mission</strong>
+            </div>
+            <div class="terminal-log">
+              <p><span>&gt;</span> <span id="terminal-line-1">Load question corpus</span></p>
+              <p><span>&gt;</span> <span id="terminal-line-2">Mix safe and vulnerable patterns</span></p>
+              <p><span>&gt;</span> <span id="terminal-line-3">Deploy 10-round training sequence</span></p>
+            </div>
+
+            <div class="ops-grid">
+              <article class="ops-card">
+                <span class="mini-label">Signal Mix</span>
+                <strong>Safe + Trap + Exploit</strong>
+              </article>
+              <article class="ops-card">
+                <span class="mini-label">Languages</span>
+                <strong>PHP / Python / JS / Java</strong>
+              </article>
+            </div>
+
+            <p class="section-tag">Scoring Model</p>
+            <ul class="score-list">
+              <li><span>Correct vulnerable / safe call</span><strong>+40</strong></li>
+              <li><span>Correct vulnerability type</span><strong>+35</strong></li>
+              <li><span>Useful reasoning bonus</span><strong>+15</strong></li>
+              <li><span>Per hint used</span><strong>-10</strong></li>
+            </ul>
+            <div class="button-row">
+              <button id="setup-home-btn" class="ghost-btn">Back To Home</button>
+              <button id="start-game-btn" class="primary-btn">Start New Mission</button>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section id="game-screen" class="panel screen">
+        <div class="hud">
+          <div class="hud-item">
+            <span class="hud-label">Round</span>
+            <strong id="round-label">1 / 10</strong>
+          </div>
+          <div class="hud-item">
+            <span class="hud-label">Score</span>
+            <strong id="score-label">0</strong>
+          </div>
+          <div class="hud-item">
+            <span class="hud-label">Difficulty</span>
+            <strong id="difficulty-label">Medium</strong>
+          </div>
+        </div>
+
+        <div class="progress-bar">
+          <div id="progress-fill" class="progress-fill"></div>
+        </div>
+
+        <div class="round-header">
+          <div>
+            <p class="section-tag">Snippet Analysis</p>
+            <h2 id="question-title">Question title</h2>
+            <p id="question-subline" class="round-subline">Inspect the code path, data flow, and trust boundaries.</p>
+          </div>
+          <div class="chip-row">
+            <span id="language-badge" class="info-chip">JavaScript</span>
+            <span id="category-badge" class="info-chip">Code Review</span>
+          </div>
+        </div>
+
+        <div class="game-layout">
+          <section class="code-panel">
+            <div class="code-header">
+              <div class="code-title-block">
+                <span>Target Source</span>
+                <small id="hint-count-label">Hints 0/3</small>
+              </div>
+              <button id="hint-btn" class="ghost-btn">Request Hint</button>
+            </div>
+            <pre class="code-window"><code id="code-block"></code></pre>
+            <div id="hints-panel" class="hint-stack"></div>
+          </section>
+
+          <section class="control-panel">
+            <div id="choice-mode-panel" class="control-group">
+              <label class="group-label" id="answer-group-label">1. Choose the best assessment</label>
+              <div id="answer-options" class="answer-options"></div>
+            </div>
+
+            <div id="input-mode-panel" class="hidden">
+              <div class="control-group">
+                <label class="group-label" id="verdict-group-label">1. Is this snippet vulnerable?</label>
+                <div class="radio-grid">
+                  <label class="radio-card">
+                    <input type="radio" name="manual-verdict" value="true">
+                    <span id="manual-vuln-label">Vulnerable</span>
+                  </label>
+                  <label class="radio-card">
+                    <input type="radio" name="manual-verdict" value="false">
+                    <span id="manual-safe-label">Not Vulnerable</span>
+                  </label>
+                </div>
+              </div>
+
+              <div id="manual-details-group" class="control-group hidden">
+                <label class="group-label" for="manual-type-input" id="manual-type-label">2. Enter the vulnerability type</label>
+                <input id="manual-type-input" type="text" placeholder="Examples: XSS, cross site scripting, safe">
+                <label class="group-label" for="reasoning-input" id="manual-reasoning-label">3. Optional reasoning</label>
+              </div>
+            </div>
+
+            <div id="reasoning-group" class="control-group">
+              <label class="group-label" for="reasoning-input" id="reasoning-label">3. Optional reasoning</label>
+              <textarea id="reasoning-input" rows="5" placeholder="Briefly explain what matters in the code."></textarea>
+            </div>
+
+            <div class="button-row">
+              <button id="home-btn" class="ghost-btn">Back To Home</button>
+              <button id="submit-btn" class="primary-btn">Submit Analysis</button>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <section id="feedback-screen" class="panel screen">
+        <div class="feedback-header">
+          <div>
+            <p class="section-tag">Round Debrief</p>
+            <h2 id="feedback-result">Correct</h2>
+            <p id="feedback-score" class="lead"></p>
+          </div>
+          <div id="feedback-pill" class="status-pill">Verified</div>
+        </div>
+
+        <div class="feedback-summary-bar">
+          <article class="feedback-stat">
+            <span class="mini-label">Correct Answer</span>
+            <strong id="correct-verdict"></strong>
+          </article>
+          <article class="feedback-stat">
+            <span class="mini-label">Category</span>
+            <strong id="correct-type"></strong>
+          </article>
+          <article class="feedback-stat">
+            <span class="mini-label">Round Score</span>
+            <strong id="feedback-score-inline"></strong>
+          </article>
+        </div>
+
+        <div id="vuln-meta-grid" class="feedback-summary-bar meta-grid">
+          <article class="feedback-stat">
+            <span class="mini-label">CWE</span>
+            <strong id="meta-cwe"></strong>
+          </article>
+          <article class="feedback-stat">
+            <span class="mini-label">CVSS</span>
+            <strong id="meta-cvss"></strong>
+          </article>
+          <article class="feedback-stat">
+            <span class="mini-label">OWASP</span>
+            <strong id="meta-owasp"></strong>
+          </article>
+        </div>
+
+        <article id="feedback-info-card" class="feedback-card info-card">
+          <div class="compare-head">
+            <div>
+              <span class="mini-label">Analysis Notes</span>
+              <strong id="feedback-info-title">Why It Matters</strong>
+            </div>
+          </div>
+          <p id="feedback-explanation"></p>
+          <p id="feedback-remediation"></p>
+        </article>
+
+        <div class="feedback-grid compare-grid">
+          <article class="feedback-card compare-card danger-card">
+            <div class="compare-head">
+              <div>
+                <span id="compare-left-label" class="mini-label">Analyzed Snippet</span>
+                <strong id="compare-left-title">Original Code</strong>
+              </div>
+            </div>
+            <pre class="code-window compare-window danger-window"><code id="feedback-original-code"></code></pre>
+          </article>
+          <article id="safe-compare-card" class="feedback-card compare-card safe-card">
+            <div class="compare-head">
+              <div>
+                <span id="compare-right-label" class="mini-label">Fixed Version</span>
+                <strong id="compare-right-title">Safe Refactor</strong>
+              </div>
+            </div>
+            <pre class="code-window compare-window remediation-window"><code id="feedback-remediation-code"></code></pre>
+          </article>
+        </div>
+
+        <div class="button-row">
+          <button id="next-btn" class="primary-btn">Next Round</button>
+        </div>
+      </section>
+
+      <section id="results-screen" class="panel screen">
+        <div class="results-hero">
+          <div>
+            <p class="section-tag">Mission Report</p>
+            <h2>Session Complete</h2>
+            <p id="results-summary" class="lead">Your final breakdown across all 10 rounds.</p>
+          </div>
+          <div id="results-rank" class="status-pill">Analyst</div>
+        </div>
+
+        <div class="results-grid">
+          <article class="mini-card results-card">
+            <span class="mini-label">Total Score</span>
+            <strong id="final-score">0</strong>
+          </article>
+          <article class="mini-card results-card">
+            <span class="mini-label">Correct Answers</span>
+            <strong id="final-correct">0</strong>
+          </article>
+          <article class="mini-card results-card">
+            <span class="mini-label">Wrong Answers</span>
+            <strong id="final-wrong">0</strong>
+          </article>
+          <article class="mini-card results-card">
+            <span class="mini-label">Accuracy</span>
+            <strong id="final-percentage">0%</strong>
+          </article>
+        </div>
+
+        <section class="panel inset-panel">
+          <div class="code-header">
+            <span>Category Breakdown</span>
+          </div>
+          <div id="category-breakdown" class="breakdown-list"></div>
+        </section>
+
+        <div class="button-row">
+          <button id="restart-btn" class="primary-btn">Restart Game</button>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="questions.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
